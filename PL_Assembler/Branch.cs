@@ -34,7 +34,7 @@ namespace PL_Assembler
         Cond = "1110";
       }
 
-      if (instructions[0].Equals("BL") || instructions[0].Equals("BPL"))
+      if (instructions[0].Equals("BL"))
       {
         L = "1";
       }
@@ -50,7 +50,7 @@ namespace PL_Assembler
     public void SetUpB(string b)
     {
       b = b.Replace("B", "");
-      if (b.Equals("PL")) B = "010";
+      if (b.Equals("PL")) B = "101";
     }
 
     public void DieLol(int whateverthisis)
