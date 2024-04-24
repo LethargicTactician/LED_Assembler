@@ -6,7 +6,7 @@
     {
       Assembler assembleRAHH = new Assembler();
       assembleRAHH.LoadAssemblyFile("C:\\Users\\Rosy Gonzalez\\VS2022_Projects\\Programming Languages\\PL_Assembler\\PL_Assembler\\kernels\\assembly.txt");
-      assembleRAHH.ExportToKernel("kernel7.img");
+      assembleRAHH.ExportToKernel("C:\\Users\\Rosy Gonzalez\\VS2022_Projects\\Programming Languages\\PL_Assembler\\PL_Assembler\\kernels\\kernel7.img");
 
       //Console.WriteLine("Hello, World!");
     }

@@ -12,7 +12,7 @@ namespace PL_Assembler
   public abstract class Instruction
   {
     //public abstract Instruction Parse(string line);
-
+    #region stuff
     public string originalInt {  get; set; }
     public string Cond { get; set; } = "1110";
     public string Rn { set; get; }
@@ -20,7 +20,7 @@ namespace PL_Assembler
     public string B {  set; get; }
     public string BCond { set; get; }
     public string BinaryMeBBG {  get; set; }
-
+    #endregion stuff
 
 
     public Instruction(string[] instructions){
@@ -29,22 +29,6 @@ namespace PL_Assembler
     }
 
     //make instruction methods??
-
-    public void GeOperationCodes(string firstCondition)
-    {
-      switch(firstCondition)
-      {
-        case "AND":
-          Cond = "0000"; break;
-        case "EOR": 
-          Cond = "0001"; break;
-        case "SUB":
-          Cond = "0010";
-          break;
-        //case "ADD": Cond = 
-      }
-
-    }
     public void GetConditionalExecutionBinary(string condition)
     {
       switch (condition)

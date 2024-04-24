@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -61,34 +62,49 @@ Int.Parse
 
         switch(instructionPart[0])
         {
+          #region MOV
           case "MOVT":
           case "MOVW":
-            instructions.Add(new MOV(instructionPart)); break;
+            #endregion
+            instructions.Add(new MOV(instructionPart)); 
+            break;
+          #region Branch 
           case "B":
           case "BAL":
           case "BPL":
-            instructions.Add(new Branch(instructionPart)); break;
-          //case "STR":
-          //case "LDR":
-          //    instructions.Add(new SingleDataTransfer(instructionPart)); 
-          //  break;
-
+            #endregion
+            instructions.Add(new Branch(instructionPart)); 
+            break;
+          #region Single Data Transfer
+          case "STR":
+          case "LDR":
+            #endregion
+            instructions.Add(new SingleDataTransfer(instructionPart)); 
+            break;
+          #region Data processing
+          case "AND":
+          case "EOR":
+          case "SUB":
+          case "SUBS":
+          case "RSB":
+          case "ADD":
+          case "ADC":
+          case "SBC":
+          case "RSC":
+          case "TST":
+          case "TEQ":
+          case "CMP":
+          case "CMN":
+          case "ORR":
+          case "MOV":
+          case "BIC":
+          case "MVN":
+            #endregion 
+            instructions.Add(new DataProcessing(instructionPart));
+            break;
         }
       }
-      //GetParsedCondCodes();
     }
-
-    //protected string GetParsedCondCodes(string condition)
-    //{
-    //  switch (condition)
-    //  {
-    //    case "MOVT": return "0000";
-    //    case "NE": return "0001";
-    //    case "CS": return "0010";
-    //    case "CC": return "0011";
-    //    default: return "";
-    //  }
-    //}
 
     /* https://stackoverflow.com/questions/14657643/writing-to-txt-file-with-streamwriter-and-filestream */
     public void ExportToKernel(string outptPath)
@@ -97,10 +113,8 @@ Int.Parse
       foreach(Instruction instruction in instructions)
       {
         Console.WriteLine(instruction.originalInt + instruction.ToString());
-
         output.Add(instruction.ConvertBinaryInsToByteArray());
       }
-
       File.WriteAllBytes(outptPath, output.SelectMany(x => x).ToArray());
 
 

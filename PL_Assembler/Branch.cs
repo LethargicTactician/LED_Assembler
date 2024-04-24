@@ -17,7 +17,6 @@ namespace PL_Assembler
     }
 
     private string B { get; set; } = "101";
-
     private string L { get; set; } = "0";
     private int Offset { get; set; }
     private string RealOffset { get; set; }
@@ -75,7 +74,7 @@ namespace PL_Assembler
 
     public override string ToString()
     {
-      return $": {BinaryMeBBG} ({BinaryMeBBG.Length}) <- B";
+      return $": {BinaryMeBBG} ({BinaryMeBBG.Length}) <- B Res";
     }
 
   }

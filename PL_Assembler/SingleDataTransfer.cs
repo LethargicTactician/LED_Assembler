@@ -24,6 +24,7 @@ namespace PL_Assembler
       ParseInstructionsForPookie(instructions);
       ProduceInstruction();
     }
+    #region stuff
     public string _type { get; set; } = "0";
     public string L { get; set; } = "0";
     public string I { get; set; } = "0";
@@ -32,30 +33,21 @@ namespace PL_Assembler
     public string B { get; set; } = "0";
     public string W { get; set; } = "0";
     public string Offset { get; set; } = "0";
+    #endregion stuff
 
     public override void ParseInstructionsForPookie(string[] instructions)
     {
       //assuming ldr is represented as 01 and str is 00?
       if (instructions[0].Equals("LDR")){
-        _type = "1";
+        L = "1";
       }
 
-      SetUpRd(instructions[0]);
-      SetUpRn(instructions[1]);
+      SetUpRd(instructions[1]);
+      SetUpRn(instructions[2]);
       Offset = "000000000000";
 
     }
-    //compiler breaks whenever we set up this method - We'd still need to convert Offset and S into binary wah
-
-    //public void SetUpImmediateOp(string thing)
-    //{
-    //  int value = ConvertStringToInt(thing);
-    //  string binaryWhatever = Convert.ToString(value, 2).PadLeft(16, '0');
-
-    //  S = binaryWhatever.Substring(4);
-    //  Offset = binaryWhatever.Substring(0,12);
-    //}
-
+    
     public override void ProduceInstruction()
     {
       BinaryMeBBG = $"{Cond}01{I}{P}{U}{B}{W}{L}{Rn}{Rd}{Offset}";
@@ -63,7 +55,7 @@ namespace PL_Assembler
 
     public override string ToString()
     {
-      return $"{BinaryMeBBG} ({BinaryMeBBG.Length}) <-DP Res";
+      return $"{BinaryMeBBG} ({BinaryMeBBG.Length}) <-SDP Res";
     }
   }
 }
