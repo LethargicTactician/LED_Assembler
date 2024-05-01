@@ -28,7 +28,7 @@ namespace PL_Assembler
 
     public DataProcessing(string[] instructions) : base(instructions)
     {
-      ParseInstructionsForPookie(instructions);
+      ParseInstructions(instructions);
       ProduceInstruction();
     }
 
@@ -96,7 +96,7 @@ namespace PL_Assembler
 
     }
 
-    public override void ParseInstructionsForPookie(string[] instructions)
+    public override void ParseInstructions(string[] instructions)
     {
       try
       {
@@ -125,12 +125,12 @@ namespace PL_Assembler
 
     public override void ProduceInstruction()
     {
-      BinaryMeBBG = $"{Cond}00{I}{OpCode}{S}{Rn}{Rd}{Operand2}";
+      BinaryOutput = $"{Cond}00{I}{OpCode}{S}{Rn}{Rd}{Operand2}";
     }
 
     public override string ToString()
     {
-      return $"{BinaryMeBBG} ({BinaryMeBBG.Length}) <-DP Res";
+      return $"{BinaryOutput} ({BinaryOutput.Length}) <-DP Res";
     }
 
 

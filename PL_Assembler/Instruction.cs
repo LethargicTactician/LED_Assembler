@@ -11,6 +11,7 @@ namespace PL_Assembler
 {
   public abstract class Instruction
   {
+
     //public abstract Instruction Parse(string line);
     #region stuff
     public string originalInt {  get; set; }
@@ -19,12 +20,43 @@ namespace PL_Assembler
     public string Rd { get; set; }
     public string B {  set; get; }
     public string BCond { set; get; }
-    public string BinaryMeBBG {  get; set; }
+    public string BinaryOutput {  get; set; }
+    public string label { set; get; } = string.Empty;
+    public Dictionary<string, int> labels = new Dictionary<string, int>();
+
     #endregion stuff
 
 
+
+    public abstract override string ToString();
+    public abstract void ParseInstructions(string[] instructions);
+    public abstract void ProduceInstruction();
+    //public abstract void SetUpImmediateOp(string thing);
+
     public Instruction(string[] instructions){
       originalInt = String.Join(" ", instructions);
+
+    }
+
+    public void Label(string instruction)
+    {
+      if (instruction.Contains(":"))
+      {
+        int index = instruction.IndexOf(':');
+        if (index != -1)
+        { 
+          label = instruction.Substring(index+1);
+        }
+      }
+
+      if (instruction.Contains("$"))
+      {
+        int index = instruction.IndexOf('$');
+        if (index != -1)
+        {
+          label = instruction.Substring(index + 1);
+        }
+      }
 
     }
 
@@ -112,17 +144,13 @@ namespace PL_Assembler
 
     }
 
-    public abstract override string ToString();
-    public abstract void ParseInstructionsForPookie(string[] instructions);
-    public abstract void ProduceInstruction();
-    //public abstract void SetUpImmediateOp(string thing);
     public byte[] ConvertBinaryInsToByteArray()
     {
       List<byte> byteUrMom = new List<byte>();
 
       for(int i = 0; i <= 24; i+= 8)
       {
-        byteUrMom.Add(Convert.ToByte(BinaryMeBBG.Substring(i, 8), 2));
+        byteUrMom.Add(Convert.ToByte(BinaryOutput.Substring(i, 8), 2));
 
       }
       byteUrMom.Reverse();

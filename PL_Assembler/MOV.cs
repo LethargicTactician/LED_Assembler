@@ -8,12 +8,12 @@
     
     public MOV(string[] instructions) : base(instructions)
     {
-      //parse pookie
-      ParseInstructionsForPookie(instructions);
+      
+      ParseInstructions(instructions);
       ProduceInstruction();
     }
 
-    public override void ParseInstructionsForPookie(string[] instructions)
+    public override void ParseInstructions(string[] instructions)
     {
       if (instructions[0].Equals("MOVT"))
       {
@@ -26,7 +26,7 @@
 
     public override void ProduceInstruction()
     {
-      BinaryMeBBG = $"{Cond}0011{type}{immm4}{Rd}{immm12}";
+      BinaryOutput = $"{Cond}0011{type}{immm4}{Rd}{immm12}";
     }
 
 
@@ -42,7 +42,7 @@
 
     public override string ToString()
     {
-      return $": {BinaryMeBBG} ({BinaryMeBBG.Length})";
+      return $": {BinaryOutput} ({BinaryOutput.Length})";
     }
 
   }

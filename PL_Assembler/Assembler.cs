@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.ExceptionServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace PL_Assembler
   {
     private List<Instruction> instructions;
     private List<string> instructionList;
+    
 
     /*
 *.split()
@@ -26,21 +28,20 @@ Int.Parse
     {
       instructions = new List<Instruction>();
       instructionList = new List<string>();
+
     }
     
     private string ParseInstructions(string line)
     {
-      //parse lines -> mabe separate by space|| " " 
       return line.Replace("\n", "").Replace("\r", "").Trim();
     }
-
 
     public void LoadAssemblyFile(string assemblyPath)
     {
       string[] lines = File.ReadAllLines(assemblyPath);
       foreach (string line in lines)
       {
-        if(!string.IsNullOrWhiteSpace(line))
+        if (!string.IsNullOrWhiteSpace(line) || !line.StartsWith("#"))
         {
           string instruction = ParseInstructions(line);
           if (instruction != null)
@@ -51,16 +52,33 @@ Int.Parse
         }
 
       }
-      ProcessThing();
+      ProcessInstruction();
     }
 
-    public void ProcessThing()
+    public void ProcessInstruction()
     {
+      //each line is an address so setting current address as 0 as default.
+      int currentAddress = 0; 
+
       foreach (string instruction in instructionList)
       { 
         string[] instructionPart = instruction.Replace(",", "").Replace(")", "").Replace("(", "").Split(' ');
 
-        switch(instructionPart[0])
+        #region attempt on identifyting labels in instruction.
+        //for(int i = 1; i< instructionPart.Length; i++)
+        //{
+        //  //using :Delay as a label
+        //  if (instructionPart[i].StartsWith(":"))
+        //  {
+        //    string label = instructionPart[i].Substring(1); //<- getting without col
+        //    int targetAddress = labels[label]; //<- error here
+        //    int offset = targetAddress = currentAddress;
+        //    instructionPart[i] = offset.ToString();
+        //  }
+        //}
+        #endregion
+
+        switch (instructionPart[0])
         {
           #region MOV
           case "MOVT":
@@ -81,7 +99,7 @@ Int.Parse
             #endregion
             instructions.Add(new SingleDataTransfer(instructionPart)); 
             break;
-          #region Data processing
+          #region Unga Bunga - Data processing
           case "AND":
           case "EOR":
           case "SUB":
@@ -103,6 +121,8 @@ Int.Parse
             instructions.Add(new DataProcessing(instructionPart));
             break;
         }
+
+        currentAddress++;
       }
     }
 

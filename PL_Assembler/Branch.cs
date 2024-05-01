@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace PL_Assembler
 {
-  //uhhhhhhhh yuh branch (B commands like B{cond}, B Loop, BEQ (error))
+  // (B commands like B{cond}, B Loop, BEQ (error))
   public class Branch : Instruction
   {
     public Branch(string[] instructions) : base(instructions)
     {
-      ParseInstructionsForPookie(instructions);
+      ParseInstructions(instructions);
       ProduceInstruction();
     }
 
@@ -22,8 +22,9 @@ namespace PL_Assembler
     private string RealOffset { get; set; }
 
 
-    public override void ParseInstructionsForPookie(string[] instructions)
+    public override void ParseInstructions(string[] instructions)
     {
+
       if (instructions[0].Equals("BPL"))
       {
         Cond = "1010";
@@ -38,12 +39,12 @@ namespace PL_Assembler
         L = "1";
       }
 
-
       SetUpB(instructions[0]);
       //GetConditionalExecutionBinary(instructions[0]);
       //L = instructions[2];
       Offset = int.Parse(instructions[1]);
-      DieLol(Offset);
+      Label(instructions[2]);
+      TurnToBinary(Offset);
     }
 
     public void SetUpB(string b)
@@ -52,12 +53,12 @@ namespace PL_Assembler
       if (b.Equals("PL")) B = "101";
     }
 
-    public void DieLol(int whateverthisis)
+    public void TurnToBinary(int numValue)
     {
-      Console.WriteLine("a: " + whateverthisis);
-      string binaryWhatever = Convert.ToString(whateverthisis, 2);
+      Console.WriteLine("a: " + numValue);
+      string binaryWhatever = Convert.ToString(numValue, 2);
       if (binaryWhatever.Length > 24) binaryWhatever = binaryWhatever.Substring(8);
-      binaryWhatever = binaryWhatever.PadLeft(24, whateverthisis < 0 ? '1' : '0');
+      binaryWhatever = binaryWhatever.PadLeft(24, numValue < 0 ? '1' : '0');
       Console.WriteLine($"b: {binaryWhatever}");
 
       RealOffset = binaryWhatever;
@@ -66,15 +67,13 @@ namespace PL_Assembler
 
     public override void ProduceInstruction()
     {
-      BinaryMeBBG = $"{Cond}{B}{L}{RealOffset}";
+      BinaryOutput = $"{Cond}{B}{L}{RealOffset}";
 
     }
 
-
-
     public override string ToString()
     {
-      return $": {BinaryMeBBG} ({BinaryMeBBG.Length}) <- B Res";
+      return $": {BinaryOutput} ({BinaryOutput.Length}) <- B Res";
     }
 
   }

@@ -21,7 +21,7 @@ namespace PL_Assembler
   {
     public SingleDataTransfer(string[] instructions) : base(instructions)
     {
-      ParseInstructionsForPookie(instructions);
+      ParseInstructions(instructions);
       ProduceInstruction();
     }
     #region stuff
@@ -35,7 +35,7 @@ namespace PL_Assembler
     public string Offset { get; set; } = "0";
     #endregion stuff
 
-    public override void ParseInstructionsForPookie(string[] instructions)
+    public override void ParseInstructions(string[] instructions)
     {
       //assuming ldr is represented as 01 and str is 00?
       if (instructions[0].Equals("LDR")){
@@ -50,12 +50,12 @@ namespace PL_Assembler
     
     public override void ProduceInstruction()
     {
-      BinaryMeBBG = $"{Cond}01{I}{P}{U}{B}{W}{L}{Rn}{Rd}{Offset}";
+      BinaryOutput = $"{Cond}01{I}{P}{U}{B}{W}{L}{Rn}{Rd}{Offset}";
     }
 
     public override string ToString()
     {
-      return $"{BinaryMeBBG} ({BinaryMeBBG.Length}) <-SDP Res";
+      return $"{BinaryOutput} ({BinaryOutput.Length}) <-SDP Res";
     }
   }
 }
