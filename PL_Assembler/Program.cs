@@ -5,9 +5,9 @@
     static void Main(string[] args)
     {
       Assembler assembleRAHH = new Assembler();
-      assembleRAHH.LoadAssemblyFile("C:\\Users\\Rosy Gonzalez\\VS2022_Projects\\Programming Languages\\PL_Assembler\\PL_Assembler\\kernels\\assembly.txt");
+      assembleRAHH.LoadAssemblyFile("C:\\Users\\Rosy Gonzalez\\VS2022_Projects\\Programming Languages\\PL_Assembler\\PL_Assembler\\kernels\\assemblyBlink.txt");
       //set to kernel test first
-      assembleRAHH.ExportToKernel("C:\\Users\\Rosy Gonzalez\\VS2022_Projects\\Programming Languages\\PL_Assembler\\PL_Assembler\\kernels\\kernel7Test.txt");
+      assembleRAHH.ExportToKernel("C:\\Users\\Rosy Gonzalez\\VS2022_Projects\\Programming Languages\\PL_Assembler\\PL_Assembler\\kernels\\kernel7.img");
 
       //Console.WriteLine("Hello, World!");
     }

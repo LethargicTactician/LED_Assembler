@@ -10,11 +10,16 @@ using System.Threading.Tasks;
 
 namespace PL_Assembler
 {
+  // : -> get 
+  // $ -> Set
+
   public class Assembler
   {
     private List<Instruction> instructions;
     private List<string> instructionList;
-    
+
+    private Dictionary<string, int> labels;
+    // private Dictionary<string, int> labels;
 
     /*
 *.split()
@@ -28,8 +33,9 @@ Int.Parse
     {
       instructions = new List<Instruction>();
       instructionList = new List<string>();
+      labels = new Dictionary<string, int>();
 
-    }
+  }
     
     private string ParseInstructions(string line)
     {
@@ -57,26 +63,25 @@ Int.Parse
 
     public void ProcessInstruction()
     {
-      //each line is an address so setting current address as 0 as default.
-      int currentAddress = 0; 
+      int currentAddress = 0;
 
       foreach (string instruction in instructionList)
       { 
         string[] instructionPart = instruction.Replace(",", "").Replace(")", "").Replace("(", "").Split(' ');
 
-        #region attempt on identifyting labels in instruction.
-        //for(int i = 1; i< instructionPart.Length; i++)
-        //{
-        //  //using :Delay as a label
-        //  if (instructionPart[i].StartsWith(":"))
-        //  {
-        //    string label = instructionPart[i].Substring(1); //<- getting without col
-        //    int targetAddress = labels[label]; //<- error here
-        //    int offset = targetAddress = currentAddress;
-        //    instructionPart[i] = offset.ToString();
-        //  }
-        //}
-        #endregion
+        foreach (string part in instructionPart)
+        {
+          if (part.StartsWith(':') || part.StartsWith('$'))
+          {
+            string label = part.Substring(1);
+
+            if (!labels.ContainsKey(label))
+            {
+              labels[label] = currentAddress;
+            }
+          }
+          currentAddress += 2; 
+        }
 
         switch (instructionPart[0])
         {
@@ -91,6 +96,11 @@ Int.Parse
           case "BAL":
           case "BPL":
             #endregion
+            string targetLabel = instructionPart[1].TrimStart(':');
+            int targetAddress = labels[targetLabel];
+            int offset = targetAddress - currentAddress; 
+
+            instructionPart[1] = offset.ToString();
             instructions.Add(new Branch(instructionPart)); 
             break;
           #region Single Data Transfer
@@ -121,10 +131,22 @@ Int.Parse
             instructions.Add(new DataProcessing(instructionPart));
             break;
         }
-
-        currentAddress++;
+        //currentAddress += 2;
       }
+      //currentAddress = 0;
     }
+
+    //private int ConvertToTwosComplement(int value, int bitSize)
+    //{
+    //  if (value < 0)
+    //  {
+    //    return ((1 << bitSize) + value);
+    //  }
+    //  return value;
+    //}
+
+
+
 
     /* https://stackoverflow.com/questions/14657643/writing-to-txt-file-with-streamwriter-and-filestream */
     public void ExportToKernel(string outptPath)

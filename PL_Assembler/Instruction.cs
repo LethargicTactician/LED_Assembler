@@ -164,11 +164,5 @@ namespace PL_Assembler
 
     }
 
-    //protected string GetDataProcessingExecutionBinary(string action)
-    //{
-
-    //  return "null";
-    //}
-
   }
 }

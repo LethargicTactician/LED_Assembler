@@ -10,6 +10,8 @@ namespace PL_Assembler
   // (B commands like B{cond}, B Loop, BEQ (error))
   public class Branch : Instruction
   {
+    private int memoryAddress;
+
     public Branch(string[] instructions) : base(instructions)
     {
       ParseInstructions(instructions);
@@ -24,6 +26,12 @@ namespace PL_Assembler
 
     public override void ParseInstructions(string[] instructions)
     {
+      if (!string.IsNullOrWhiteSpace(label))
+      {
+        this.label = label;
+
+
+      }
 
       if (instructions[0].Equals("BPL"))
       {
@@ -40,10 +48,8 @@ namespace PL_Assembler
       }
 
       SetUpB(instructions[0]);
-      //GetConditionalExecutionBinary(instructions[0]);
-      //L = instructions[2];
       Offset = int.Parse(instructions[1]);
-      Label(instructions[2]);
+      //Label(instructions[2]);
       TurnToBinary(Offset);
     }
 
