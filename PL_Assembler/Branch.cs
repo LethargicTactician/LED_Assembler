@@ -18,7 +18,7 @@ namespace PL_Assembler
       ProduceInstruction();
     }
 
-    private string B { get; set; } = "101";
+    private string B { get; set; } = "101"; 
     private string L { get; set; } = "0";
     private int Offset { get; set; }
     private string RealOffset { get; set; }
@@ -49,14 +49,14 @@ namespace PL_Assembler
 
       SetUpB(instructions[0]);
       Offset = int.Parse(instructions[1]);
-      //Label(instructions[2]);
       TurnToBinary(Offset);
     }
 
     public void SetUpB(string b)
     {
       b = b.Replace("B", "");
-      if (b.Equals("PL")) B = "101";
+      //if (b.Equals("PL")) B = "101";
+      //if (b.Equals("BL")) B = "0";
     }
 
     public void TurnToBinary(int numValue)

@@ -10,30 +10,28 @@ using System.Threading.Tasks;
 
 namespace PL_Assembler
 {
-  // : -> get 
-  // $ -> Set
 
   public class Assembler
   {
     private List<Instruction> instructions;
     private List<string> instructionList;
-
+    //adding labels to the dictionary along with values
     private Dictionary<string, int> labels;
-    // private Dictionary<string, int> labels;
+    private int[] labelValues;
+    private string[] labelInputs;
+    private string[] labelOutputs;
 
-    /*
-*.split()
-.indexOf()
-.toString
-[0]
-Int.Parse
-*/
+
 
     public Assembler()
     {
       instructions = new List<Instruction>();
       instructionList = new List<string>();
+      //same thing here
       labels = new Dictionary<string, int>();
+      labelValues = new int[0];
+      labelInputs = new string[0];
+      labelOutputs = new string[0];
 
   }
     
@@ -80,7 +78,7 @@ Int.Parse
               labels[label] = currentAddress;
             }
           }
-          currentAddress += 2; 
+          //currentAddress ++; 
         }
 
         switch (instructionPart[0])
@@ -95,13 +93,16 @@ Int.Parse
           case "B":
           case "BAL":
           case "BPL":
+          case "BL":
             #endregion
             string targetLabel = instructionPart[1].TrimStart(':');
             int targetAddress = labels[targetLabel];
-            int offset = targetAddress - currentAddress; 
 
+            Console.WriteLine($"Target Address: {targetAddress}, Current Address: {currentAddress}");
+            int offset = targetAddress - currentAddress - 2;
+            Console.WriteLine($"Offset: {offset}");
             instructionPart[1] = offset.ToString();
-            instructions.Add(new Branch(instructionPart)); 
+            instructions.Add(new Branch(instructionPart));
             break;
           #region Single Data Transfer
           case "STR":
@@ -131,20 +132,10 @@ Int.Parse
             instructions.Add(new DataProcessing(instructionPart));
             break;
         }
-        //currentAddress += 2;
+        //currentAddress +=2;
       }
       //currentAddress = 0;
     }
-
-    //private int ConvertToTwosComplement(int value, int bitSize)
-    //{
-    //  if (value < 0)
-    //  {
-    //    return ((1 << bitSize) + value);
-    //  }
-    //  return value;
-    //}
-
 
 
 
