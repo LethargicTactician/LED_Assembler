@@ -15,6 +15,7 @@
 
     public override void ParseInstructions(string[] instructions)
     {
+      Title = "MOV";
       if (instructions[0].Equals("MOVT"))
       {
         type = "0100";
@@ -22,6 +23,7 @@
       }
       SetUpRd(instructions[1]);
       SetUpImmediateOp(instructions[2]);
+      SetLabel(instructions);
     }
 
     public override void ProduceInstruction()

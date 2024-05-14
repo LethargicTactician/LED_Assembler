@@ -98,12 +98,14 @@ namespace PL_Assembler
 
     public override void ParseInstructions(string[] instructions)
     {
+      Title = "DP";
       try
       {
         GeConditionCodes(instructions[0]);
         SetUpRd(instructions[1]);
         SetUpRn(instructions[2]); 
         SetUpImmediateOp(instructions[3]);
+        SetLabel(instructions);
       }catch (Exception error)
       {
         Console.WriteLine(error + "<--- ERROR");

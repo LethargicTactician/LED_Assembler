@@ -15,11 +15,11 @@ namespace PL_Assembler
   {
     private List<Instruction> instructions;
     private List<string> instructionList;
-    //adding labels to the dictionary along with values
-    private Dictionary<string, int> labels;
-    private int[] labelValues;
-    private string[] labelInputs;
-    private string[] labelOutputs;
+    //private Dictionary<string, int> labels;
+    //private int[] labelValues;
+    //private string[] labelInputs;
+    //private string[] labelOutputs;
+    //public int currentAddress = 0;
 
 
 
@@ -27,16 +27,16 @@ namespace PL_Assembler
     {
       instructions = new List<Instruction>();
       instructionList = new List<string>();
-      //same thing here
-      labels = new Dictionary<string, int>();
-      labelValues = new int[0];
-      labelInputs = new string[0];
-      labelOutputs = new string[0];
+      //labels = new Dictionary<string, int>();
+      //labelValues = new int[0];
+      //labelInputs = new string[0];
+      //labelOutputs = new string[0];
 
   }
     
     private string ParseInstructions(string line)
     {
+      
       return line.Replace("\n", "").Replace("\r", "").Trim();
     }
 
@@ -54,10 +54,12 @@ namespace PL_Assembler
             instructionList.Add(instruction);
           }
         }
-
       }
       ProcessInstruction();
+      UpdateOffset();
     }
+
+    
 
     public void ProcessInstruction()
     {
@@ -67,19 +69,21 @@ namespace PL_Assembler
       { 
         string[] instructionPart = instruction.Replace(",", "").Replace(")", "").Replace("(", "").Split(' ');
 
-        foreach (string part in instructionPart)
-        {
-          if (part.StartsWith(':') || part.StartsWith('$'))
-          {
-            string label = part.Substring(1);
+        //foreach (string part in instructionPart)
+        //{
+        //  if (part.Contains(':') || part.Contains('$'))
+        //  {
+        //      Console.WriteLine($"paer: {part}");
+        //      string label = part.Substring(1);
+        //      Console.WriteLine($"label: {label}");
 
-            if (!labels.ContainsKey(label))
-            {
-              labels[label] = currentAddress;
-            }
-          }
-          //currentAddress ++; 
-        }
+        //      if (!labels.ContainsKey(label))
+        //    {
+        //      labels[label] = currentAddress;
+        //    }
+        //  }
+        //  //currentAddress ++; 
+        //}
 
         switch (instructionPart[0])
         {
@@ -95,14 +99,28 @@ namespace PL_Assembler
           case "BPL":
           case "BL":
             #endregion
-            string targetLabel = instructionPart[1].TrimStart(':');
-            int targetAddress = labels[targetLabel];
+            //string targetLabel = instructionPart[1].Substring(1);
 
-            Console.WriteLine($"Target Address: {targetAddress}, Current Address: {currentAddress}");
-            int offset = targetAddress - currentAddress - 2;
-            Console.WriteLine($"Offset: {offset}");
-            instructionPart[1] = offset.ToString();
+            //// string targetLabel = instructionPart[1].TrimStart(':');
+
+            //if (labels.ContainsKey(targetLabel))
+            //{
+            //  int targetAddress = labels[targetLabel];
+            //  int offset = targetAddress - currentAddress - 1;
+            //  instructionPart[1] = offset.ToString();
+            //}
+            //else
+            //{
+            //  Console.WriteLine("LABEL NOT FOUND LOLOLOLOLLL!!!!!");
+            //}
+            //Console.ForegroundColor = ConsoleColor.Red;
+            //Console.WriteLine(String.Join(" | ", instructionPart));
+            //Console.ResetColor();
             instructions.Add(new Branch(instructionPart));
+            //currentAddress++;
+
+            //Console.WriteLine($"Target Address: {targetAddress}, Current Address: {currentAddress}");
+            //Console.WriteLine($"Offset: {offset}");
             break;
           #region Single Data Transfer
           case "STR":
@@ -152,6 +170,45 @@ namespace PL_Assembler
 
 
     }
+
+    public void UpdateOffset()
+    {
+      for(int i = 0; i < instructions.Count; i++)
+      {
+
+
+        //Console.WriteLine($"i: {instructions[i]} --------------------");
+        for(int j = 0; j < instructions.Count; j++)
+        {
+          //Console.WriteLine($"j: {instructions[j]} --------------------");
+          if (instructions[i].Title.Equals("B") && !instructions[i].Equals(instructions[j]))
+          {
+            if (instructions[i].label != null && instructions[j].label != null)
+            {
+                //Console.WriteLine($"{i} || {j} {instructions[i].Title}: {instructions[i].label} || {instructions[j].Title}: {instructions[j].label} ");
+              if (instructions[i].label.Equals(instructions[j].label))
+              {
+                Console.WriteLine($"FOUND: {i} || {j} {instructions[i].Title}: {instructions[i].label} || {instructions[j].Title}: {instructions[j].label} ");
+                int hgfdsa = (j - i) + (-2);
+                Console.WriteLine(hgfdsa);
+                
+                  ((Branch)instructions[i]).UpdateOffsetValue(hgfdsa);
+              }
+
+
+
+            }
+
+          }
+
+
+        }
+
+
+      }
+
+    }
+
 
   }
 }

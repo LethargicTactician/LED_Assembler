@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,11 +11,12 @@ namespace PL_Assembler
   // (B commands like B{cond}, B Loop, BEQ (error))
   public class Branch : Instruction
   {
-    private int memoryAddress;
+    //private int memoryAddress;
 
     public Branch(string[] instructions) : base(instructions)
     {
       ParseInstructions(instructions);
+      Offset = 0;
       ProduceInstruction();
     }
 
@@ -26,13 +28,7 @@ namespace PL_Assembler
 
     public override void ParseInstructions(string[] instructions)
     {
-      if (!string.IsNullOrWhiteSpace(label))
-      {
-        this.label = label;
-
-
-      }
-
+      Title = "B";
       if (instructions[0].Equals("BPL"))
       {
         Cond = "1010";
@@ -47,9 +43,17 @@ namespace PL_Assembler
         L = "1";
       }
 
-      SetUpB(instructions[0]);
-      Offset = int.Parse(instructions[1]);
-      TurnToBinary(Offset);
+      //SetUpB(instructions[0]);
+      SetLabel(instructions);
+      Console.WriteLine("HI: " + label);
+            //Offset = int.Parse(instructions[1]);
+      //TurnToBinary(Offset)/*;*/
+    }
+
+    public void UpdateOffsetValue(int offsetValue)
+    {
+      TurnToBinary(offsetValue);
+      ProduceInstruction();
     }
 
     public void SetUpB(string b)

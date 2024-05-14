@@ -21,7 +21,8 @@ namespace PL_Assembler
     public string B {  set; get; }
     public string BCond { set; get; }
     public string BinaryOutput {  get; set; }
-    public string label { set; get; } = string.Empty;
+    public string label { set; get; }
+    public string Title { set; get; } = string.Empty;
     public Dictionary<string, int> labels = new Dictionary<string, int>();
 
     #endregion stuff
@@ -38,27 +39,26 @@ namespace PL_Assembler
 
     }
 
-    public void Label(string instruction)
+    public void SetLabel(string[] instruction)
     {
-      if (instruction.Contains(":"))
-      {
-        int index = instruction.IndexOf(':');
-        if (index != -1)
-        { 
-          label = instruction.Substring(index+1);
-        }
-      }
 
-      if (instruction.Contains("$"))
+      foreach (string part in instruction)
       {
-        int index = instruction.IndexOf('$');
-        if (index != -1)
+                Console.WriteLine($"kms: {part}");
+                if (part.Contains(":"))
         {
-          label = instruction.Substring(index + 1);
+          int index = part.IndexOf(':');
+          label = part.Substring(index + 1).Trim();
+        } else
+        if (part.Contains("$"))
+        {
+          int index = part.IndexOf('$');
+          label = part.Substring(index + 1).Trim();
         }
       }
-
     }
+
+    
 
     //make instruction methods??
     public void GetConditionalExecutionBinary(string condition)
