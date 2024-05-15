@@ -44,8 +44,8 @@ namespace PL_Assembler
 
       foreach (string part in instruction)
       {
-                Console.WriteLine($"kms: {part}");
-                if (part.Contains(":"))
+                //Console.WriteLine($"kms: {part}");
+        if (part.Contains(":"))
         {
           int index = part.IndexOf(':');
           label = part.Substring(index + 1).Trim();

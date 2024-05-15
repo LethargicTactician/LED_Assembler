@@ -43,9 +43,21 @@ namespace PL_Assembler
         L = "1";
       }
 
+      //if (instructions[0].Equals("BX"))
+      //{
+      //  B = "";
+        //if (SetUpRn.Equals("0000"))
+        //{
+        //  L = "0";
+        //} else
+        //{
+        //  L = "1";
+        //}
+      //}
+
       //SetUpB(instructions[0]);
       SetLabel(instructions);
-      Console.WriteLine("HI: " + label);
+      //Console.WriteLine("HI: " + label);
             //Offset = int.Parse(instructions[1]);
       //TurnToBinary(Offset)/*;*/
     }
@@ -61,6 +73,7 @@ namespace PL_Assembler
       b = b.Replace("B", "");
       //if (b.Equals("PL")) B = "101";
       //if (b.Equals("BL")) B = "0";
+      
     }
 
     public void TurnToBinary(int numValue)

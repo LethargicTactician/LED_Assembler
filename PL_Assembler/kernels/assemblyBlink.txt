@@ -29,9 +29,9 @@ BL :DelayMe
 B :Repeat
 
 #Delay
-MOVW R6, 0x4240 $DelayMe
-MOVT R6, 0xF
-SUBS R6, R6, 0x01 $LoopStart
+MOVW R10, 0x4240 $DelayMe
+MOVT R10, 0xF
+SUBS R10, R10, 1 $LoopStart
 
 #-1 - 2 = -3
 BPL :LoopStart

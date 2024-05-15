@@ -45,7 +45,7 @@ namespace PL_Assembler
       string[] lines = File.ReadAllLines(assemblyPath);
       foreach (string line in lines)
       {
-        if (!string.IsNullOrWhiteSpace(line) || !line.StartsWith("#"))
+        if (!string.IsNullOrWhiteSpace(line) && !line.StartsWith("#"))
         {
           string instruction = ParseInstructions(line);
           if (instruction != null)
@@ -63,27 +63,11 @@ namespace PL_Assembler
 
     public void ProcessInstruction()
     {
-      int currentAddress = 0;
+      //int currentAddress = 0;
 
       foreach (string instruction in instructionList)
       { 
         string[] instructionPart = instruction.Replace(",", "").Replace(")", "").Replace("(", "").Split(' ');
-
-        //foreach (string part in instructionPart)
-        //{
-        //  if (part.Contains(':') || part.Contains('$'))
-        //  {
-        //      Console.WriteLine($"paer: {part}");
-        //      string label = part.Substring(1);
-        //      Console.WriteLine($"label: {label}");
-
-        //      if (!labels.ContainsKey(label))
-        //    {
-        //      labels[label] = currentAddress;
-        //    }
-        //  }
-        //  //currentAddress ++; 
-        //}
 
         switch (instructionPart[0])
         {
@@ -99,10 +83,9 @@ namespace PL_Assembler
           case "BPL":
           case "BL":
             #endregion
+            #region old code
             //string targetLabel = instructionPart[1].Substring(1);
-
             //// string targetLabel = instructionPart[1].TrimStart(':');
-
             //if (labels.ContainsKey(targetLabel))
             //{
             //  int targetAddress = labels[targetLabel];
@@ -116,11 +99,15 @@ namespace PL_Assembler
             //Console.ForegroundColor = ConsoleColor.Red;
             //Console.WriteLine(String.Join(" | ", instructionPart));
             //Console.ResetColor();
-            instructions.Add(new Branch(instructionPart));
             //currentAddress++;
-
             //Console.WriteLine($"Target Address: {targetAddress}, Current Address: {currentAddress}");
             //Console.WriteLine($"Offset: {offset}");
+            #endregion old code
+            instructions.Add(new Branch(instructionPart));
+            break;
+
+          case "BX":
+            instructions.Add(new BranchExchange(instructionPart));
             break;
           #region Single Data Transfer
           case "STR":
@@ -175,8 +162,6 @@ namespace PL_Assembler
     {
       for(int i = 0; i < instructions.Count; i++)
       {
-
-
         //Console.WriteLine($"i: {instructions[i]} --------------------");
         for(int j = 0; j < instructions.Count; j++)
         {
@@ -188,10 +173,9 @@ namespace PL_Assembler
                 //Console.WriteLine($"{i} || {j} {instructions[i].Title}: {instructions[i].label} || {instructions[j].Title}: {instructions[j].label} ");
               if (instructions[i].label.Equals(instructions[j].label))
               {
-                Console.WriteLine($"FOUND: {i} || {j} {instructions[i].Title}: {instructions[i].label} || {instructions[j].Title}: {instructions[j].label} ");
+               // Console.WriteLine($"FOUND: {i} || {j} {instructions[i].Title}: {instructions[i].label} || {instructions[j].Title}: {instructions[j].label} ");
                 int hgfdsa = (j - i) + (-2);
-                Console.WriteLine(hgfdsa);
-                
+                Console.WriteLine("calc: " + hgfdsa);                
                   ((Branch)instructions[i]).UpdateOffsetValue(hgfdsa);
               }
 
