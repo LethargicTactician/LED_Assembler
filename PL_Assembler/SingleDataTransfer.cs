@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
@@ -51,7 +52,39 @@ namespace PL_Assembler
     public override void ProduceInstruction()
     {
       BinaryOutput = $"{Cond}01{I}{P}{U}{B}{W}{L}{Rn}{Rd}{Offset}";
-    }
+
+      if (L == "1")
+      {
+        if (Offset.Contains("-")) 
+        {
+          P = "1";
+          U = "0";
+          W = "1";
+        }
+        else
+        {
+          //pre-increment load
+          P = "1";
+          U = "1";
+          W = "1";
+        }
+      }
+      //str
+      else 
+      {
+        //if offset starts with other andom character to represent str then
+
+        //P = "1";
+        //U = "0";
+        //W = "1";
+
+        // else
+        //P = "1";
+        //U = "1";
+        //W = "1";
+      } 
+
+    } 
 
     public override string ToString()
     {

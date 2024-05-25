@@ -11,7 +11,6 @@ namespace PL_Assembler
 {
   public abstract class Instruction
   {
-
     //public abstract Instruction Parse(string line);
     #region stuff
     public string originalInt {  get; set; }
@@ -26,8 +25,6 @@ namespace PL_Assembler
     public Dictionary<string, int> labels = new Dictionary<string, int>();
 
     #endregion stuff
-
-
 
     public abstract override string ToString();
     public abstract void ParseInstructions(string[] instructions);
@@ -57,6 +54,18 @@ namespace PL_Assembler
         }
       }
     }
+
+    //public void SetStack(string[] instruction)
+    //{
+    //  foreach(string stackPart in instruction)
+    //  {
+    //    if(stackPart.Contains(" "))
+    //    {
+
+    //    }
+    //  }
+
+    //}
 
     
 

@@ -29,7 +29,6 @@ namespace PL_Assembler
     public override void ProduceInstruction()
     {
       BinaryOutput = $"{Cond}000100101111111111110001{Rn}";
-
     }
 
     public override string ToString()

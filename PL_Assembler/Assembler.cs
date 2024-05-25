@@ -27,12 +27,8 @@ namespace PL_Assembler
     {
       instructions = new List<Instruction>();
       instructionList = new List<string>();
-      //labels = new Dictionary<string, int>();
-      //labelValues = new int[0];
-      //labelInputs = new string[0];
-      //labelOutputs = new string[0];
 
-  }
+    }
     
     private string ParseInstructions(string line)
     {
@@ -83,26 +79,6 @@ namespace PL_Assembler
           case "BPL":
           case "BL":
             #endregion
-            #region old code
-            //string targetLabel = instructionPart[1].Substring(1);
-            //// string targetLabel = instructionPart[1].TrimStart(':');
-            //if (labels.ContainsKey(targetLabel))
-            //{
-            //  int targetAddress = labels[targetLabel];
-            //  int offset = targetAddress - currentAddress - 1;
-            //  instructionPart[1] = offset.ToString();
-            //}
-            //else
-            //{
-            //  Console.WriteLine("LABEL NOT FOUND LOLOLOLOLLL!!!!!");
-            //}
-            //Console.ForegroundColor = ConsoleColor.Red;
-            //Console.WriteLine(String.Join(" | ", instructionPart));
-            //Console.ResetColor();
-            //currentAddress++;
-            //Console.WriteLine($"Target Address: {targetAddress}, Current Address: {currentAddress}");
-            //Console.WriteLine($"Offset: {offset}");
-            #endregion old code
             instructions.Add(new Branch(instructionPart));
             break;
 
@@ -114,6 +90,10 @@ namespace PL_Assembler
           case "LDR":
             #endregion
             instructions.Add(new SingleDataTransfer(instructionPart)); 
+            break;
+          case "STMEA":
+          case "LDMEA":
+            instructions.Add(new StackOperations(instructionPart));
             break;
           #region Unga Bunga - Data processing
           case "AND":
@@ -178,21 +158,38 @@ namespace PL_Assembler
                 Console.WriteLine("calc: " + hgfdsa);                
                   ((Branch)instructions[i]).UpdateOffsetValue(hgfdsa);
               }
-
-
-
             }
-
           }
-
-
         }
-
-
       }
-
     }
-
-
   }
+  //public void UpdateOffset()
+  //{
+  //  for (int i = 0; i < instructions.Count; i++)
+  //  {
+  //    for (int j = 0; j < instructions.Count; j++)
+  //    {
+  //      if (instructions[i].Title.Equals("B") || instructions[i].Title.Equals("BL"))
+  //      {
+  //        if (instructions[i].label != null && instructions[j].label != null)
+  //        {
+  //          if (instructions[i].label.Equals(instructions[j].label))
+  //          {
+  //            int offsetValue = (j - i) * 4 - 8;  // PC-relative offset
+  //            if (instructions[i] is Branch)
+  //            {
+  //              ((Branch)instructions[i]).UpdateOffsetValue(offsetValue);
+  //            }
+  //            else if (instructions[i] is BranchLink)
+  //            {
+  //              ((BranchLink)instructions[i]).UpdateOffsetValue(offsetValue);
+  //            }
+  //          }
+  //        }
+  //      }
+  //    }
+  //  }
+  //}
+
 }
