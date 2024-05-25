@@ -53,21 +53,7 @@ namespace PL_Assembler
           label = part.Substring(index + 1).Trim();
         }
       }
-    }
-
-    //public void SetStack(string[] instruction)
-    //{
-    //  foreach(string stackPart in instruction)
-    //  {
-    //    if(stackPart.Contains(" "))
-    //    {
-
-    //    }
-    //  }
-
-    //}
-
-    
+    }    
 
     //make instruction methods??
     public void GetConditionalExecutionBinary(string condition)
@@ -175,3 +161,4 @@ namespace PL_Assembler
 
   }
 }
+// 1110 1001 0010 1101 1101 1111 1111 1111
