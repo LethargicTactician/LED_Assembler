@@ -2,6 +2,9 @@
 MOVW R4, 0
 MOVT R4, 0x3F20
 
+MOVW R13, 0
+MOVT R13, 0
+
 #Register
 ADD R2, R4, 0x08 
 LDR R3, (R2)

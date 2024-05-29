@@ -15,11 +15,6 @@ namespace PL_Assembler
       ParseInstructions(instructions);
       ProduceInstruction();
     }
-    //set default values 
-    //r13 is the storing register, this is where you load & store values to the other assembly instructions
-    //create a variable that will store the values in r13 
-    //when the stack assembly file contains for example {R0-R12} this is getting the value of r13 and adding it to all of the instructns 
-    //
 
     private string P { get; set; } = "1";
     private string U { get; set; } = "0";
@@ -33,61 +28,48 @@ namespace PL_Assembler
 
       Console.WriteLine("INT: " + instructions);
       Rlist = GetRegisterList(instructions[2]);
-            
+
       if (!instructions[1].EndsWith("!"))
       {
         this.W = "0";
       }
+
       SetUpRn(instructions[1].Replace("!", ""));
-      GetDelayValue(instructions[1]);
-      
+      GetDelayValue(instructions[2]);
+
+      SetUpStackInstruction(instructions[0]);
     }
 
-    public void SetUpStackINstruction(string[] instructions)
+    private void SetUpStackInstruction(string instruction)
     {
-      foreach(string instruction in instructions)
+      switch (instruction)
       {
-        switch (instructions[0])
-        {
-          case "LDMED":
-            L = "1";
-            P = "1";
-            U = "1";
-            break;
-          case "STMEA":
+        case "LDMED":
+            L = "1"; P = "1"; U = "1";
+          break;
+        case "STMEA":
             L="0"; P = "0"; U = "1";
-            break;
-          case "LDMFD":
-            L = "1"; P = "0"; U = "0";
-            break;
-          case "LDMEA":
+          break;
+        case "LDMFD":
+          L = "1"; P = "0"; U = "0";
+          break;
+        case "LDMEA":
             L = "1"; P = "1"; U ="0";
-            break;
-          case "LDMFA":
+          break;
+        case "LDMFA":
             L = "0"; P = "1"; U="1";
-            break;
-          case "STMFA": 
+          break;
+        case "STMFA":
             L = "0"; P = "1"; U="1";
-            break;
-          case "STMFD":
+          break;
+        case "STMFD":
             L = "0"; P = "1"; U="0";
-            break;
-          case "STMED":
+          break;
+        case "STMED":
             L = "0"; P = "0";U = "0";
-            break;
-        }
+          break;
       }
-
     }
-
-    //public void SetRegister13(string rValue)
-    //{
-    //  //removes "R" and "!" from "R13!", leaving "13" as the value of that register
-    //  rValue = rValue.Replace("!", "").Replace("R", "");
-
-      
-
-    //}
 
     private string GetRegisterList(string registers)
     {
@@ -106,11 +88,9 @@ namespace PL_Assembler
         finalReg.PadLeft(16, '0');
         //val.Add(registers.Split("-"));
         
-      }      
-        Console.WriteLine("rosy is gay:" + finalReg);
-      return finalReg.ToString();
-      //   return Convert.ToString((1 << (int.Parse(regList[1].Replace("R", "")) + 1)) - 1, 2).PadLeft(16, '0');
+      }
 
+      return finalReg;
     }
 
     public string GetDelayValue(string delayedValue)

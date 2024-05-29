@@ -45,10 +45,10 @@ namespace PL_Assembler
 
       SetUpRd(instructions[1]);
       SetUpRn(instructions[2]);
-      Offset = "000000000000";
-
+      // Offset = "000000000000";
+      Offset = instructions[3] != null ? "000000000000" : Convert.ToString(Convert.ToInt32(instructions[3].TrimStart('*').Replace("0x", ""), 16));
     }
-    
+
     public override void ProduceInstruction()
     {
       BinaryOutput = $"{Cond}01{I}{P}{U}{B}{W}{L}{Rn}{Rd}{Offset}";
