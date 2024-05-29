@@ -31,11 +31,25 @@ MOVW R2, 0x0000
 MOVT R2, 0x0020
 STR R2, (R3)
 
+#Delay Again
+BL :DelayMe
+B :Repeat
+
 #might not be correct
 STMEA R13! {R0-R12}
 MOVW R6 0x0900 
 MOVT R6 0x3D
 STREA R6, R13!, *0x01
 
-BL :delay (11)
+BL :DelayMe 
 LDMEA R13! {R0-R12}
+
+#Delay
+MOVW R10, 0x4240 $DelayMe
+MOVT R10, 0xF
+SUBS R10, R10, 1 $LoopStart
+
+BPL :LoopStart
+
+#Loop
+BX R14
